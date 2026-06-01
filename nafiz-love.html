@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 A Little Question...</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #ff6b9d;
+    --deep: #c9184a;
+    --soft: #ffd6e7;
+    --cream: #fff0f6;
+    --dark: #4a0e1e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ffe0ec 0%, #ffc2d4 30%, #ffb3c6 60%, #ff85a1 100%);
+    font-family: 'Lato', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Floating hearts background */
+  .hearts-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-heart {
+    position: absolute;
+    font-size: 1.2rem;
+    opacity: 0.15;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0.1; }
+    50% { opacity: 0.2; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* Main card */
+  .card {
+    position: relative;
+    z-index: 10;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 32px;
+    padding: 52px 44px 44px;
+    max-width: 480px;
+    width: 92vw;
+    text-align: center;
+    box-shadow:
+      0 30px 80px rgba(201,24,74,0.18),
+      0 8px 24px rgba(255,107,157,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.9);
+    border: 1.5px solid rgba(255,107,157,0.25);
+  }
+
+  /* Watermark */
+  .watermark {
+    position: fixed;
+    bottom: 16px;
+    right: 20px;
+    z-index: 999;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    color: rgba(201,24,74,0.5);
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+  }
+  .watermark span { font-weight: 700; color: rgba(201,24,74,0.7); }
+
+  /* Start screen */
+  #start-screen { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+  .big-heart {
+    font-size: 5rem;
+    animation: heartBeat 1.4s ease-in-out infinite;
+    filter: drop-shadow(0 4px 16px rgba(255,107,157,0.5));
+  }
+
+  @keyframes heartBeat {
+    0%,100% { transform: scale(1); }
+    14% { transform: scale(1.15); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+  }
+
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: #a0496a;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  .btn-start {
+    margin-top: 8px;
+    background: linear-gradient(135deg, var(--pink), var(--deep));
+    color: white;
+    border: none;
+    padding: 16px 52px;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: 0 8px 28px rgba(201,24,74,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-start:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 14px 36px rgba(201,24,74,0.45);
+  }
+  .btn-start:active { transform: scale(0.97); }
+
+  /* Question screen */
+  #question-screen { display: none; flex-direction: column; align-items: center; gap: 28px; }
+
+  .progress-wrap {
+    width: 100%;
+    background: rgba(255,107,157,0.15);
+    border-radius: 50px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--deep));
+    border-radius: 50px;
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 2px 8px rgba(201,24,74,0.3);
+  }
+
+  .step-label {
+    font-size: 0.78rem;
+    color: #c47a8f;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .question-emoji {
+    font-size: 3.2rem;
+    animation: pop 0.4s cubic-bezier(.4,0,.2,1);
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    color: var(--dark);
+    line-height: 1.45;
+    font-style: italic;
+    animation: fadeSlide 0.45s ease;
+  }
+
+  @keyframes fadeSlide {
+    0% { opacity: 0; transform: translateY(18px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+
+  .btn-yes {
+    background: linear-gradient(135deg, #ff6b9d, #c9184a);
+    color: white;
+    border: none;
+    padding: 15px 44px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
+    cursor: pointer;
+    box-shadow: 0 6px 22px rgba(201,24,74,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.04em;
+  }
+  .btn-yes:hover { transform: scale(1.07); box-shadow: 0 10px 30px rgba(201,24,74,0.45); }
+  .btn-yes:active { transform: scale(0.96); }
+
+  .btn-no {
+    background: rgba(255,107,157,0.12);
+    color: var(--deep);
+    border: 2px solid rgba(255,107,157,0.4);
+    padding: 13px 36px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    letter-spacing: 0.04em;
+    position: absolute;
+  }
+
+  /* Final screen */
+  #final-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .burst-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .final-heart {
+    font-size: 4.5rem;
+    animation: heartBeat 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 6px 20px rgba(255,107,157,0.6));
+    z-index: 2;
+    position: relative;
+  }
+
+  .orbit-heart {
+    position: absolute;
+    font-size: 1.2rem;
+    animation: orbit linear infinite;
+  }
+
+  @keyframes orbit {
+    from { transform: rotate(var(--start)) translateX(50px) rotate(calc(-1 * var(--start))); }
+    to { transform: rotate(calc(var(--start) + 360deg)) translateX(50px) rotate(calc(-1 * (var(--start) + 360deg))); }
+  }
+
+  .final-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--dark);
+    line-height: 1.3;
+  }
+
+  .final-msg {
+    font-size: 1.05rem;
+    color: #a0496a;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  .final-sub {
+    font-size: 0.88rem;
+    color: #c47a8f;
+    letter-spacing: 0.04em;
+  }
+
+  .confetti-heart {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 1.5rem;
+    animation: confettiFall 2.5s ease-in forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(-20px) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Floating hearts background -->
+<div class="hearts-bg" id="hearts-bg"></div>
+
+<!-- Watermark -->
+<div class="watermark">❤️ Made by <span>Nafiz</span></div>
+
+<div class="card">
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+    <div class="big-heart">💖</div>
+    <h1 class="title">I have something<br>to ask you…</h1>
+    <p class="subtitle">Just a few little questions 🌸</p>
+    <button class="btn-start" onclick="startGame()">Let's Begin ✨</button>
+  </div>
+
+  <!-- QUESTION SCREEN -->
+  <div id="question-screen">
+    <div style="width:100%">
+      <div class="step-label" id="step-label">Question 1 of 5</div>
+      <div style="height:8px"></div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="question-emoji" id="q-emoji">💭</div>
+    <div class="question-text" id="q-text">Loading...</div>
+    <div class="btn-row" id="btn-row">
+      <button class="btn-no" id="btn-no" onmouseenter="dodgeNo()" onclick="dodgeNo()">No 🙈</button>
+      <button class="btn-yes" onclick="answerYes()">Yes 💕</button>
+    </div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div id="final-screen">
+    <div class="burst-container">
+      <div class="final-heart">💖</div>
+      <div class="orbit-heart" style="--start:0deg; animation-duration:3s;">💗</div>
+      <div class="orbit-heart" style="--start:120deg; animation-duration:3.5s;">💕</div>
+      <div class="orbit-heart" style="--start:240deg; animation-duration:2.8s;">✨</div>
+    </div>
+    <h2 class="final-title">Aww 💖<br>You made me happy!</h2>
+    <p class="final-msg">"I knew you'd choose me 😊<br>You're truly special to me."</p>
+    <p class="final-sub">— with love, always 🌸</p>
+  </div>
+
+</div>
+
+<script>
+  const questions = [
+    { emoji: "🌸", text: "Do you like me?" },
+    { emoji: "💭", text: "Do you think about me?" },
+    { emoji: "✨", text: "Am I special to you?" },
+    { emoji: "🤝", text: "Will you stay with me?" },
+    { emoji: "💓", text: "Do you love me?" },
+  ];
+
+  let current = 0;
+
+  // Generate background hearts
+  const bg = document.getElementById('hearts-bg');
+  for (let i = 0; i < 24; i++) {
+    const h = document.createElement('div');
+    h.className = 'bg-heart';
+    h.textContent = ['💗','💕','💖','🌸','✨','💝'][Math.floor(Math.random()*6)];
+    h.style.left = Math.random() * 100 + 'vw';
+    h.style.animationDuration = (8 + Math.random() * 12) + 's';
+    h.style.animationDelay = (-Math.random() * 20) + 's';
+    h.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+    bg.appendChild(h);
+  }
+
+  function startGame() {
+    document.getElementById('start-screen').style.display = 'none';
+    const qs = document.getElementById('question-screen');
+    qs.style.display = 'flex';
+    showQuestion();
+  }
+
+  function showQuestion() {
+    const q = questions[current];
+    document.getElementById('q-emoji').textContent = q.emoji;
+    // force re-animation
+    const el = document.getElementById('q-text');
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = '';
+    el.textContent = q.text;
+
+    const pct = (current / questions.length) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('step-label').textContent = `Question ${current+1} of ${questions.length}`;
+
+    // Reset NO button position
+    const noBtn = document.getElementById('btn-no');
+    noBtn.style.position = 'relative';
+    noBtn.style.left = '';
+    noBtn.style.top = '';
+    noBtn.style.transform = '';
+  }
+
+  function answerYes() {
+    spawnConfetti();
+    current++;
+    if (current >= questions.length) {
+      showFinal();
+    } else {
+      showQuestion();
+    }
+  }
+
+  let dodgeCount = 0;
+  function dodgeNo() {
+    dodgeCount++;
+    const btn = document.getElementById('btn-no');
+    const row = document.getElementById('btn-row');
+    const card = document.querySelector('.card');
+    const cardRect = card.getBoundingClientRect();
+
+    // Random jump within card area, relative positioning trick
+    const maxX = 160, maxY = 140;
+    const rx = (Math.random() - 0.5) * maxX;
+    const ry = (Math.random() - 0.5) * maxY;
+
+    btn.style.position = 'absolute';
+    btn.style.transition = 'left 0.15s, top 0.15s';
+    btn.style.left = (50 + rx) + 'px';
+    btn.style.top = (ry > 0 ? 60 : -60) + 'px';
+
+    if (dodgeCount > 5) {
+      btn.style.opacity = '0.4';
+    }
+    if (dodgeCount > 10) {
+      btn.classList.add('hidden');
+    }
+  }
+
+  function showFinal() {
+    document.getElementById('question-screen').style.display = 'none';
+    const fs = document.getElementById('final-screen');
+    fs.style.display = 'flex';
+    // Big confetti burst
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => spawnConfetti(true), i * 80);
+    }
+    document.getElementById('progress-bar').style.width = '100%';
+  }
+
+  function spawnConfetti(big = false) {
+    const emojis = ['💗','💕','💖','💝','🌸','✨','💓','🥰'];
+    const el = document.createElement('div');
+    el.className = 'confetti-heart';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = (10 + Math.random() * 80) + 'vw';
+    el.style.top = '0';
+    el.style.fontSize = big ? (1.5 + Math.random() * 1.5) + 'rem' : '1.2rem';
+    el.style.animationDuration = (1.8 + Math.random() * 1.5) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+  }
+</script>
+</body>
+</html>
