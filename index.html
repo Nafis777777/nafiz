@@ -978,7 +978,7 @@
     <p class="subtitle">Just a few little questions 🌸</p>
     <p class="couple-line" id="couple-line"></p>
     <button class="btn-start" onclick="startGame()">Let's Begin ✨</button>
-    <button class="btn-personalize" onclick="openPersonalize()">💌 Personalize for your love</button>
+    <button class="btn-personalize" id="btn-personalize" onclick="openPersonalize()">💌 Personalize for your love</button>
   </div>
 
   <!-- QUESTION SCREEN -->
@@ -1474,6 +1474,13 @@
       '💌 From <b>' + LOVE_FROM + '</b> — for <b>' + LOVE_TO + '</b>';
     document.getElementById('letter-sign').textContent = '— forever yours, ' + LOVE_FROM + ' 💖';
     document.getElementById('final-title').innerHTML = 'Aww 💖<br>' + LOVE_TO + ' said YES!';
+    // Share kora link-e dhukle personalize button lukiye jabe — ota shudhu sender-er jonno
+    let viaLink = false;
+    try {
+      const q2 = new URLSearchParams(location.search);
+      viaLink = !!(cleanName(q2.get('from')) || cleanName(q2.get('to')));
+    } catch (e) {}
+    document.getElementById('btn-personalize').style.display = viaLink ? 'none' : '';
     try {
       const q = new URLSearchParams(location.search);
       document.getElementById('input-from').value =
