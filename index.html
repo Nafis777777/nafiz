@@ -1560,11 +1560,7 @@
     </div>
     <input id="input-photo-url" type="url" placeholder="…or paste image link (to share in link)" autocomplete="off">
     <label for="input-note">💌 Secret note <span class="pm-opt">(optional)</span></label>
-    <p class="pm-hint">Scratch card er vitore ei chithitai ber hobe — na dile shobar jonno default note thakbe 💖</p>
     <textarea id="input-note" rows="3" maxlength="160" placeholder="Write the hidden letter your love will scratch to reveal…"></textarea>
-    <label for="input-fortune">🔮 Love fortune <span class="pm-opt">(optional)</span></label>
-    <p class="pm-hint">Finale te fortune dekhte chaile ei line tai ber hobe — na dile sundor ekta emni theke jabe ✨</p>
-    <input id="input-fortune" type="text" maxlength="90" placeholder="e.g. Aaj tomar jonno ekta surprise ache…" autocomplete="off">
     <div class="pm-row">
       <button class="pm-btn pm-save" onclick="saveNames()">💾 Save</button>
       <button class="pm-btn pm-copy" onclick="copyShareLink()">🔗 Copy link</button>
@@ -2719,8 +2715,6 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
   function persistNote() {
     var inp = document.getElementById('input-note');
     try { localStorage.setItem('love_note', cleanNote(inp ? inp.value : '')); } catch (e) {}
-    var fin = document.getElementById('input-fortune');
-    try { localStorage.setItem('love_fortune', cleanFortune(fin ? fin.value : '')); } catch (e) {}
   }
   if (typeof window.applyNames === 'function') {
     var _applyNames = window.applyNames;
@@ -2744,12 +2738,6 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
     if (/^https?:\/\//i.test(ph)) url += '&photo=' + encodeURIComponent(ph);
     var note = getNote();
     if (note) url += '&note=' + encodeURIComponent(note);
-    var fortune = '';
-    try {
-      fortune = cleanFortune(new URLSearchParams(location.search).get('fortune')) ||
-        cleanFortune(localStorage.getItem('love_fortune'));
-    } catch (e) {}
-    if (fortune) url += '&fortune=' + encodeURIComponent(fortune);
     var done = function () {
       if (typeof window.toastMini === 'function') toastMini('Link copied! Send it to your love 💌');
     };
@@ -2922,10 +2910,8 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
     }
   };
 
-  // ---- Love Fortune: finale te optional, personalize theke set kora jay ----
-  function cleanFortune(v) {
-    return String(v || '').replace(/[<>&"']/g, '').trim().slice(0, 90);
-  }
+  // ---- Love Fortune: puropuri luck — protidin protijoner jonno ekta,
+  // sara din setai thake, porer din notun ashe ----
   var FORTUNES = [
     'Aaj tomader hashi diye din shuru hobe ☀️💖',
     'Ekta chhoto surprise opekkha korche… cokh khola rekho ✨',
@@ -2934,30 +2920,26 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
     'Aaj ekta purono gaan dujon kei mone poriye debe 🎵💗',
     'Je kotha ta bolte chaicho, aaj bollei valo hobe 💌',
     'Aaj hashi hobe beshi, rag hobe kom 😄💖',
-    'Tomader jonno ekta sundor muhurto asche, khub shigroi 🌸'
+    'Tomader jonno ekta sundor muhurto asche, khub shigroi 🌸',
+    'Aaj ekta hashi onek kichu bodle debe 😊💞',
+    'Durotto jotoi hok, moner tan kombe na 💫💖',
+    'Aaj purono ekta smriti notun kore misti lagbe 🌷💗',
+    'Keu ekjon aaj tomake niye khub gorbo korche 🥰✨'
   ];
   function getFortune() {
+    var today = new Date().toDateString();
     try {
-      var qf = cleanFortune(new URLSearchParams(location.search).get('fortune'));
-      if (qf) return qf;
-    } catch (e) {}
-    try {
-      var lf = cleanFortune(localStorage.getItem('love_fortune'));
-      if (lf) return lf;
-    } catch (e) {}
-    return FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
-  }
-  function prefillFortune() {
-    var inp = document.getElementById('input-fortune');
-    if (!inp || document.activeElement === inp) return;
-    try {
-      inp.value = cleanFortune(new URLSearchParams(location.search).get('fortune')) ||
-        cleanFortune(localStorage.getItem('love_fortune')) || '';
-    } catch (e) {}
-  }
-  if (typeof window.openPersonalize === 'function') {
-    var _openPersonalize = window.openPersonalize;
-    window.openPersonalize = function () { _openPersonalize(); prefillFortune(); };
+      var savedDay = localStorage.getItem('love_fortune_day');
+      var savedText = localStorage.getItem('love_fortune_text');
+      if (savedDay === today && savedText) return savedText;
+      var pool = FORTUNES.filter(function (f) { return f !== savedText; });
+      var pick = pool[Math.floor(Math.random() * pool.length)];
+      localStorage.setItem('love_fortune_day', today);
+      localStorage.setItem('love_fortune_text', pick);
+      return pick;
+    } catch (e) {
+      return FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+    }
   }
   window.revealFortune = function () {
     var card = document.getElementById('fortune-card');
@@ -2971,7 +2953,6 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
   };
 
   applyNote();
-  prefillFortune();
 })();
 </script>
 <script>
