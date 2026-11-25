@@ -1180,6 +1180,53 @@
     transition: opacity 0.7s ease;
   }
   .scratch-wrap.revealed #scratch-canvas { opacity: 0; pointer-events: none; }
+
+  /* Scratch letter — kagojer chithir look (2026-11-25) */
+  .scratch-secret {
+    background: linear-gradient(160deg, #fffaf2, #ffeef4);
+  }
+  .scratch-secret::before {
+    content: '';
+    position: absolute; inset: 9px;
+    border: 1.5px dashed rgba(201,24,74,0.35);
+    border-radius: 16px;
+    pointer-events: none;
+  }
+  .letter-seal {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ff8fab, #c9184a);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.45rem;
+    border: 2px solid #fff;
+    box-shadow: 0 6px 16px rgba(201,24,74,0.4);
+  }
+  .letter-to {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #a4133c;
+  }
+  .scratch-msg {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.99rem;
+    line-height: 1.55;
+    color: #7a1f38;
+  }
+  .scratch-sign { font-size: 0.85rem; color: #a4133c; opacity: 0.85; }
+  .pm-card textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 6px 0 4px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(201,24,74,0.25);
+    background: rgba(255,255,255,0.85);
+    font: inherit;
+    font-size: 0.95rem;
+    color: #5b2333;
+    resize: vertical;
+  }
 </style>
 </head>
 <body>
@@ -1271,12 +1318,14 @@
 
   <!-- SCRATCH SCREEN — finale er age lukano chithi -->
   <div id="scratch-screen">
-    <div class="scratch-title">Ekta lukano chithi ache tomar jonno 💌</div>
-    <p class="scratch-sub">Niche angul diye ghoso — secret ta ber hobe ✨</p>
+    <div class="scratch-title">Tomar jonno ekta lukano chithi 💌</div>
+    <p class="scratch-sub">Angul diye ghoso… vitore ja ache, shudhu tomar jonno ✨</p>
     <div class="scratch-wrap" id="scratch-wrap">
       <div class="scratch-secret">
-        <div class="scratch-emoji">💖</div>
-        <p class="scratch-msg">Tumi-i amar sobcheye priyo manush…<br>ekhon sesh surprise ta dekho ✨</p>
+        <div class="letter-seal">💌</div>
+        <p class="letter-to" id="letter-to">Priyo My love,</p>
+        <p class="scratch-msg" id="scratch-msg">Some feelings are too big for a chat box, so I hid them here, just for you. You are my favourite hello, my hardest goodbye, and every smile in between. Thank you for being you. 💖</p>
+        <p class="scratch-sign" id="scratch-sign">— forever yours, Nafiz 💖</p>
       </div>
       <canvas id="scratch-canvas"></canvas>
     </div>
@@ -1327,6 +1376,9 @@
       <button class="pm-remove" id="photo-remove" onclick="clearPhoto()" hidden>✕</button>
     </div>
     <input id="input-photo-url" type="url" placeholder="…or paste image link (to share in link)" autocomplete="off">
+    <label for="input-note">💌 Secret note <span class="pm-opt">(optional)</span></label>
+    <p class="pm-hint">Scratch card er vitore ei chithitai ber hobe — na dile shobar jonno default note thakbe 💖</p>
+    <textarea id="input-note" rows="3" maxlength="160" placeholder="Write the hidden letter your love will scratch to reveal…"></textarea>
     <div class="pm-row">
       <button class="pm-btn pm-save" onclick="saveNames()">💾 Save</button>
       <button class="pm-btn pm-copy" onclick="copyShareLink()">🔗 Copy link</button>
@@ -2373,15 +2425,35 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
     var w = wrap.clientWidth, h = wrap.clientHeight;
     canvas.width = w; canvas.height = h;
     var g = ctx.createLinearGradient(0, 0, w, h);
-    g.addColorStop(0, '#ff8fab'); g.addColorStop(1, '#c9184a');
+    g.addColorStop(0, '#ff6b9d'); g.addColorStop(0.55, '#e6396b'); g.addColorStop(1, '#a4133c');
     ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    var rg = ctx.createRadialGradient(w / 2, h / 2, 10, w / 2, h / 2, w * 0.55);
+    rg.addColorStop(0, 'rgba(255,255,255,0.35)'); rg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = rg; ctx.fillRect(0, 0, w, h);
     ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(255,255,255,0.95)';
-    ctx.font = '700 20px sans-serif';
-    ctx.fillText('💌 GHOSHE DEKHO 💌', w / 2, h / 2 - 4);
-    ctx.font = '13px sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.fillText('angul diye ghoso… ekta secret ache', w / 2, h / 2 + 22);
+    ctx.fillStyle = 'rgba(255,255,255,0.16)';
+    ctx.font = '15px sans-serif';
+    var hx = [24, w - 30, 42, w - 58, 68, w - 96, 26, w - 24];
+    var hy = [28, 36, h - 28, h - 42, 22, h - 22, h - 70, 76];
+    for (var i = 0; i < hx.length; i++) ctx.fillText('♥', hx[i], hy[i]);
+    ctx.beginPath();
+    ctx.arc(w / 2, h / 2 - 28, 27, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.stroke();
+    ctx.font = '26px sans-serif';
+    ctx.fillText('💌', w / 2, h / 2 - 19);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '700 21px "Playfair Display", serif';
+    ctx.fillText('A Secret Letter', w / 2, h / 2 + 28);
+    var pill = '✦  SCRATCH TO OPEN  ✦';
+    ctx.font = '600 11px sans-serif';
+    var pw = ctx.measureText(pill).width + 28;
+    var px = w / 2 - pw / 2, py = h / 2 + 42;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(px, py, pw, 22, 11); else ctx.rect(px, py, pw, 22);
+    ctx.fillStyle = 'rgba(255,255,255,0.22)'; ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(pill, w / 2, py + 15);
     var drawing = false, last = null, moves = 0;
     function pos(e) {
       var r = canvas.getBoundingClientRect();
@@ -2419,6 +2491,75 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
       canvas.addEventListener(ev, function () { drawing = false; last = null; });
     });
   }
+
+  // ---- Secret note: personalize theke nijer note, na dile default ----
+  function cleanNote(v) {
+    return String(v || '').replace(/[<>&"']/g, '').trim().slice(0, 160);
+  }
+  function getNote() {
+    try {
+      var qn = cleanNote(new URLSearchParams(location.search).get('note'));
+      if (qn) return qn;
+    } catch (e) {}
+    try { return cleanNote(localStorage.getItem('love_note')); } catch (e) { return ''; }
+  }
+  var msgEl = document.getElementById('scratch-msg');
+  var DEFAULT_NOTE = msgEl ? msgEl.textContent : '';
+  function applyNote() {
+    var note = getNote() || DEFAULT_NOTE;
+    if (msgEl) msgEl.textContent = note;
+    var names = (typeof window.getNames === 'function')
+      ? window.getNames() : { from: 'Nafiz', to: 'My love' };
+    var lt = document.getElementById('letter-to');
+    if (lt) lt.textContent = 'Priyo ' + names.to + ',';
+    var sg = document.getElementById('scratch-sign');
+    if (sg) sg.textContent = '— forever yours, ' + names.from + ' 💖';
+    var inp = document.getElementById('input-note');
+    if (inp && document.activeElement !== inp) {
+      try {
+        inp.value = cleanNote(new URLSearchParams(location.search).get('note')) ||
+          cleanNote(localStorage.getItem('love_note')) || '';
+      } catch (e) {}
+    }
+  }
+  function persistNote() {
+    var inp = document.getElementById('input-note');
+    try { localStorage.setItem('love_note', cleanNote(inp ? inp.value : '')); } catch (e) {}
+  }
+  if (typeof window.applyNames === 'function') {
+    var _applyNames = window.applyNames;
+    window.applyNames = function () { _applyNames(); applyNote(); };
+  }
+  if (typeof window.saveNames === 'function') {
+    var _saveNames = window.saveNames;
+    window.saveNames = function (silent) {
+      persistNote();
+      _saveNames(silent);
+      applyNote();
+    };
+  }
+  window.copyShareLink = function () {
+    if (typeof window.saveNames === 'function') window.saveNames(true);
+    var n = (typeof window.getNames === 'function')
+      ? window.getNames() : { from: 'Nafiz', to: 'My love' };
+    var url = location.origin + location.pathname +
+      '?from=' + encodeURIComponent(n.from) + '&to=' + encodeURIComponent(n.to);
+    var ph = (typeof window.getPhoto === 'function') ? window.getPhoto() : '';
+    if (/^https?:\/\//i.test(ph)) url += '&photo=' + encodeURIComponent(ph);
+    var note = getNote();
+    if (note) url += '&note=' + encodeURIComponent(note);
+    var done = function () {
+      if (typeof window.toastMini === 'function') toastMini('Link copied! Send it to your love 💌');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(function () {
+        window.prompt('Copy your link:', url);
+      });
+    } else {
+      window.prompt('Copy your link:', url);
+    }
+  };
+  applyNote();
 })();
 </script>
 <script>
