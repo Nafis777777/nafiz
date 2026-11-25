@@ -1092,6 +1092,94 @@
     from { opacity: 0; transform: perspective(700px) rotateY(90deg) scale(0.9); }
     to { opacity: 1; transform: perspective(700px) rotateY(0deg) scale(1); }
   }
+
+  /* ===== Mascot (2026-11-25) ===== */
+  #mascot {
+    position: absolute;
+    top: -36px;
+    right: -8px;
+    width: 96px;
+    z-index: 60;
+    pointer-events: none;
+    animation: mascotBob 3.2s ease-in-out infinite;
+    filter: drop-shadow(0 8px 14px rgba(201,24,74,0.25));
+  }
+  @keyframes mascotBob {
+    0%,100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-7px) rotate(2deg); }
+  }
+  #mascot .eyes-heart, #mascot .eyes-sad, #mascot .mouth-sad, #mascot .mouth-love, #mascot .tear { display: none; }
+  #mascot .eyes-normal { transform-box: fill-box; transform-origin: center; animation: mascotBlink 4.6s infinite; }
+  @keyframes mascotBlink {
+    0%, 91%, 100% { transform: scaleY(1); }
+    94% { transform: scaleY(0.08); }
+  }
+  #mascot .ear { transform-box: fill-box; transition: transform 0.25s ease; }
+  #mascot .ear-l { transform-origin: bottom right; }
+  #mascot .ear-r { transform-origin: bottom left; }
+  #mascot .blush { opacity: 0.35; transition: opacity 0.25s ease; }
+  #mascot .m-tail { transform-box: fill-box; transform-origin: left center; animation: tailWag 2.4s ease-in-out infinite; }
+  @keyframes tailWag {
+    0%,100% { transform: rotate(0deg); }
+    50% { transform: rotate(9deg); }
+  }
+  /* sad — No button er dike haat gelei */
+  #mascot.sad { animation: mascotShake 0.4s ease-in-out infinite; }
+  @keyframes mascotShake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-3px) rotate(-2deg); }
+    75% { transform: translateX(3px) rotate(2deg); }
+  }
+  #mascot.sad .eyes-normal, #mascot.sad .mouth-normal { display: none; }
+  #mascot.sad .eyes-sad, #mascot.sad .mouth-sad { display: block; }
+  #mascot.sad .tear { display: block; animation: tearFall 0.9s ease-in infinite; }
+  @keyframes tearFall {
+    0% { transform: translateY(0); opacity: 0; }
+    25% { opacity: 1; }
+    100% { transform: translateY(10px); opacity: 0; }
+  }
+  #mascot.sad .ear-l { transform: rotate(-20deg); }
+  #mascot.sad .ear-r { transform: rotate(20deg); }
+  /* love — Yes chaplei */
+  #mascot.love { animation: mascotJump 0.55s ease-in-out infinite; }
+  @keyframes mascotJump {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-13px) scale(1.05); }
+  }
+  #mascot.love .eyes-normal, #mascot.love .mouth-normal { display: none; }
+  #mascot.love .eyes-heart, #mascot.love .mouth-love { display: block; }
+  #mascot.love .blush { opacity: 0.9; }
+
+  /* ===== Scratch card (2026-11-25) ===== */
+  #scratch-screen { display: none; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+  .scratch-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--deep); }
+  .scratch-sub { font-size: 0.92rem; opacity: 0.85; margin-top: -10px; }
+  .scratch-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    height: 200px;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 14px 34px rgba(201,24,74,0.28);
+    border: 1.5px solid rgba(255,255,255,0.6);
+  }
+  .scratch-secret {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 18px; text-align: center;
+    background: linear-gradient(135deg, #fff0f6, #ffd6e7);
+  }
+  .scratch-emoji { font-size: 2.4rem; animation: mascotBob 2.6s ease-in-out infinite; }
+  .scratch-msg { font-family: 'Playfair Display', serif; font-size: 1.08rem; line-height: 1.5; color: #8a2440; }
+  #scratch-canvas {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    touch-action: none;
+    cursor: pointer;
+    transition: opacity 0.7s ease;
+  }
+  .scratch-wrap.revealed #scratch-canvas { opacity: 0; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -1124,6 +1212,37 @@
 
 <div class="card">
 
+  <!-- Mascot — No dekhle kade, Yes dekhle lafay -->
+  <div id="mascot" aria-hidden="true">
+    <svg viewBox="0 0 120 120">
+      <path class="m-tail" d="M94 96 q24 2 18 -18" stroke="#f7a8c4" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path class="ear ear-l" d="M29 40 L23 13 L50 25 Z" fill="#fff5f8" stroke="#f7a8c4" stroke-width="3" stroke-linejoin="round"/>
+      <path class="ear ear-r" d="M91 40 L97 13 L70 25 Z" fill="#fff5f8" stroke="#f7a8c4" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="60" cy="67" rx="43" ry="37" fill="#fff5f8" stroke="#f7a8c4" stroke-width="3"/>
+      <ellipse class="blush" cx="33" cy="78" rx="8.5" ry="5" fill="#ff9ebb"/>
+      <ellipse class="blush" cx="87" cy="78" rx="8.5" ry="5" fill="#ff9ebb"/>
+      <g class="eyes-normal">
+        <ellipse cx="45" cy="63" rx="4.6" ry="6.2" fill="#5b2333"/>
+        <ellipse cx="75" cy="63" rx="4.6" ry="6.2" fill="#5b2333"/>
+        <circle cx="46.8" cy="60.4" r="1.7" fill="#fff"/>
+        <circle cx="76.8" cy="60.4" r="1.7" fill="#fff"/>
+      </g>
+      <g class="eyes-heart">
+        <text x="45" y="71" font-size="17" text-anchor="middle">❤️</text>
+        <text x="75" y="71" font-size="17" text-anchor="middle">❤️</text>
+      </g>
+      <g class="eyes-sad">
+        <path d="M37 65 q8 -6 16 0" stroke="#5b2333" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M67 65 q8 -6 16 0" stroke="#5b2333" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path class="tear" d="M41 70 q-4 8 0 11 q4 -3 0 -11" fill="#7ec8f7"/>
+        <path class="tear" d="M79 70 q-4 8 0 11 q4 -3 0 -11" fill="#7ec8f7"/>
+      </g>
+      <path class="mouth-normal" d="M54 78 q3 3.4 6 0 q3 3.4 6 0" stroke="#c9184a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <path class="mouth-sad" d="M54 83 q6 -5 12 0" stroke="#c9184a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <path class="mouth-love" d="M52 76 q8 9 16 0 q-8 4 -16 0 Z" fill="#a4133c"/>
+    </svg>
+  </div>
+
   <!-- START SCREEN -->
   <div id="start-screen">
     <div class="big-heart">💖</div>
@@ -1149,6 +1268,20 @@
       <button class="btn-no" id="btn-no" onmouseenter="dodgeNo()" onclick="dodgeNo()">No 🙈</button>
       <button class="btn-yes" onclick="answerYes()">Yes 💕</button>
     </div>
+  </div>
+
+  <!-- SCRATCH SCREEN — finale er age lukano chithi -->
+  <div id="scratch-screen">
+    <div class="scratch-title">Ekta lukano chithi ache tomar jonno 💌</div>
+    <p class="scratch-sub">Niche angul diye ghoso — secret ta ber hobe ✨</p>
+    <div class="scratch-wrap" id="scratch-wrap">
+      <div class="scratch-secret">
+        <div class="scratch-emoji">💖</div>
+        <p class="scratch-msg">Tumi-i amar sobcheye priyo manush…<br>ekhon sesh surprise ta dekho ✨</p>
+      </div>
+      <canvas id="scratch-canvas"></canvas>
+    </div>
+    <button class="btn-yes" id="btn-scratch-done" style="display:none" onclick="finishScratch()">Sesh ta dekhi ➜</button>
   </div>
 
   <!-- FINAL SCREEN -->
@@ -2185,6 +2318,108 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
     }
     requestAnimationFrame(loop);
   })();
+})();
+</script>
+<script>
+// ===== Mascot reactions + scratch card (2026-11-25) =====
+(function () {
+  var mascot = document.getElementById('mascot');
+  var stateTimer = null;
+  function setState(cls, ms) {
+    if (!mascot) return;
+    mascot.classList.remove('sad', 'love');
+    if (cls) mascot.classList.add(cls);
+    clearTimeout(stateTimer);
+    if (cls && ms) stateTimer = setTimeout(function () { mascot.classList.remove(cls); }, ms);
+  }
+  var noBtn = document.getElementById('btn-no');
+  if (noBtn) {
+    noBtn.addEventListener('mouseenter', function () { setState('sad', 1300); });
+    noBtn.addEventListener('click', function () { setState('sad', 1300); });
+  }
+  if (typeof window.answerYes === 'function') {
+    var _answerYes = window.answerYes;
+    window.answerYes = function () { setState('love', 1600); _answerYes(); };
+  }
+  if (typeof window.startGame === 'function') {
+    var _startGame = window.startGame;
+    window.startGame = function () { setState('love', 1200); _startGame(); };
+  }
+
+  // ---- Scratch card: finale er age ekta dhap ----
+  var scratchDone = false, scratchReady = false;
+  if (typeof window.showFinal === 'function') {
+    var _showFinal = window.showFinal;
+    window.showFinal = function () {
+      if (!scratchDone) { openScratch(); return; }
+      _showFinal();
+    };
+  }
+  function openScratch() {
+    document.getElementById('question-screen').style.display = 'none';
+    document.getElementById('scratch-screen').style.display = 'flex';
+    setState('love', 1500);
+    if (!scratchReady) { scratchReady = true; initScratch(); }
+  }
+  window.finishScratch = function () {
+    scratchDone = true;
+    document.getElementById('scratch-screen').style.display = 'none';
+    setState('love', 2200);
+    window.showFinal();
+  };
+  function initScratch() {
+    var wrap = document.getElementById('scratch-wrap');
+    var canvas = document.getElementById('scratch-canvas');
+    var ctx = canvas.getContext('2d');
+    var w = wrap.clientWidth, h = wrap.clientHeight;
+    canvas.width = w; canvas.height = h;
+    var g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, '#ff8fab'); g.addColorStop(1, '#c9184a');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    ctx.font = '700 20px sans-serif';
+    ctx.fillText('💌 GHOSHE DEKHO 💌', w / 2, h / 2 - 4);
+    ctx.font = '13px sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.fillText('angul diye ghoso… ekta secret ache', w / 2, h / 2 + 22);
+    var drawing = false, last = null, moves = 0;
+    function pos(e) {
+      var r = canvas.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+    function scratchTo(p) {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.lineWidth = 46; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      if (last) ctx.moveTo(last.x, last.y); else ctx.moveTo(p.x, p.y);
+      ctx.lineTo(p.x, p.y); ctx.stroke();
+      last = p;
+    }
+    function checkReveal() {
+      if (++moves % 12) return;
+      var data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      var clear = 0, total = 0;
+      for (var i = 3; i < data.length; i += 388) { total++; if (data[i] === 0) clear++; }
+      if (total && clear / total > 0.45) {
+        wrap.classList.add('revealed');
+        document.getElementById('btn-scratch-done').style.display = 'inline-block';
+        setState('love', 1800);
+      }
+    }
+    canvas.addEventListener('pointerdown', function (e) {
+      drawing = true; last = null;
+      try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+      scratchTo(pos(e));
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      if (!drawing) return;
+      scratchTo(pos(e)); checkReveal();
+    });
+    ['pointerup', 'pointercancel'].forEach(function (ev) {
+      canvas.addEventListener(ev, function () { drawing = false; last = null; });
+    });
+  }
 })();
 </script>
 </body>
