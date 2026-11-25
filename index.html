@@ -1066,6 +1066,27 @@
     50% { box-shadow: 0 8px 34px rgba(201,24,74,0.6), 0 0 0 14px rgba(255,107,157,0); }
   }
   .btn-no { opacity: 0.85; }
+  /* Mobile (touch): no mouse, so the card sways gently on its own and the
+     heart layers drift at different speeds — the 3D depth stays visible. */
+  @media (pointer: coarse) {
+    .card { animation: cardSway 7s ease-in-out infinite; }
+    .heart-layer:nth-child(1) { animation: layerDrift 11s ease-in-out infinite alternate; }
+    .heart-layer:nth-child(2) { animation: layerDrift 8s ease-in-out infinite alternate-reverse; }
+    .heart-layer:nth-child(3) { animation: layerDrift 6s ease-in-out infinite alternate; }
+    .btn-yes { animation: yesPulse 1.8s ease-in-out infinite, yesBeat 1.8s ease-in-out infinite; }
+  }
+  @keyframes cardSway {
+    0%,100% { transform: perspective(1200px) rotateY(-2.4deg) rotateX(1.5deg); }
+    50% { transform: perspective(1200px) rotateY(2.4deg) rotateX(-1.5deg); }
+  }
+  @keyframes layerDrift {
+    from { transform: translate3d(-10px, -6px, 0); }
+    to { transform: translate3d(10px, 8px, 0); }
+  }
+  @keyframes yesBeat {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.07); }
+  }
   body #final-screen.play .final-gif-wrap { animation: flipIn 1s cubic-bezier(.22,1.15,.36,1) 1.5s forwards; }
   @keyframes flipIn {
     from { opacity: 0; transform: perspective(700px) rotateY(90deg) scale(0.9); }
