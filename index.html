@@ -1057,6 +1057,20 @@
   }
 
   .hidden { display: none !important; }
+  /* ===== 3D upgrades (2026-11-25) ===== */
+  .card { transform-style: preserve-3d; will-change: transform; }
+  .heart-layer { position: absolute; inset: 0; will-change: transform; }
+  .btn-yes { animation: yesPulse 1.8s ease-in-out infinite; }
+  @keyframes yesPulse {
+    0%,100% { box-shadow: 0 6px 26px rgba(255,107,157,0.5), 0 0 0 0 rgba(255,107,157,0.45); }
+    50% { box-shadow: 0 8px 34px rgba(201,24,74,0.6), 0 0 0 14px rgba(255,107,157,0); }
+  }
+  .btn-no { opacity: 0.85; }
+  body #final-screen.play .final-gif-wrap { animation: flipIn 1s cubic-bezier(.22,1.15,.36,1) 1.5s forwards; }
+  @keyframes flipIn {
+    from { opacity: 0; transform: perspective(700px) rotateY(90deg) scale(0.9); }
+    to { opacity: 1; transform: perspective(700px) rotateY(0deg) scale(1); }
+  }
 </style>
 </head>
 <body>
@@ -1288,6 +1302,15 @@
 
   // Generate background hearts + twinkling sparkles
   const bg = document.getElementById('hearts-bg');
+  // 3D parallax: hearts live in 3 depth layers (back / mid / front)
+  const heartLayers = [];
+  [0.25, 0.55, 1].forEach(function(depth) {
+    const layer = document.createElement('div');
+    layer.className = 'heart-layer';
+    layer.dataset.depth = depth;
+    bg.appendChild(layer);
+    heartLayers.push(layer);
+  });
   for (let i = 0; i < 24; i++) {
     const h = document.createElement('div');
     h.className = 'bg-heart';
@@ -1296,7 +1319,7 @@
     h.style.animationDuration = (8 + Math.random() * 12) + 's';
     h.style.animationDelay = (-Math.random() * 20) + 's';
     h.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
-    bg.appendChild(h);
+    heartLayers[i % 3].appendChild(h);
   }
   for (let i = 0; i < 40; i++) {
     const s = document.createElement('div');
@@ -2117,6 +2140,31 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
       }, () => fallback());
     } catch (e) { fallback(); }
   })();
+</script>
+<script>
+// ===== 3D tilt + parallax hearts (2026-11-25) =====
+(function () {
+  if (!window.matchMedia || !matchMedia('(pointer:fine)').matches) return;
+  var card = document.querySelector('.card');
+  var layers = document.querySelectorAll('.heart-layer');
+  if (!card || !layers.length) return;
+  var tx = 0, ty = 0, cx = 0, cy = 0;
+  document.addEventListener('mousemove', function (e) {
+    tx = (e.clientX / window.innerWidth - 0.5) * 2;
+    ty = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+  document.addEventListener('mouseleave', function () { tx = 0; ty = 0; });
+  (function loop() {
+    cx += (tx - cx) * 0.06;
+    cy += (ty - cy) * 0.06;
+    card.style.transform = 'perspective(1200px) rotateY(' + (cx * 7).toFixed(3) + 'deg) rotateX(' + (-cy * 7).toFixed(3) + 'deg)';
+    for (var i = 0; i < layers.length; i++) {
+      var d = parseFloat(layers[i].dataset.depth) || 0.5;
+      layers[i].style.transform = 'translate3d(' + (cx * 26 * d).toFixed(2) + 'px,' + (cy * 18 * d).toFixed(2) + 'px,0)';
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
 </script>
 </body>
 </html>
