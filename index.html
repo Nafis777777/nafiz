@@ -1185,8 +1185,7 @@
 <body>
 
 <!-- ===== LIVE VIDEO BACKGROUND (Midnight Tram) ===== -->
-<video id="bg-video" autoplay muted loop playsinline preload="auto">
-  <source src="sakura-tree-landscape.mp4" type="video/mp4">
+<video id="bg-video" muted loop playsinline preload="none" data-src="sakura-tree-landscape.mp4" style="opacity:0;transition:opacity 1.4s ease">
 </video>
 <div class="grade"></div>
 <div class="vignette"></div>
@@ -2420,6 +2419,31 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
       canvas.addEventListener(ev, function () { drawing = false; last = null; });
     });
   }
+})();
+</script>
+<script>
+// ===== Background video: pore load hobe, page age khulbe (2026-11-25) =====
+// 15.7MB video prothomei tante gele slow net-e puro site atke jay —
+// tai page kholar por video asbe; khub slow net hole video asbe-i na,
+// gradient + hearts background thakbe.
+(function () {
+  var v = document.getElementById('bg-video');
+  if (!v) return;
+  var conn = navigator.connection || {};
+  if (conn.saveData || conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g') return;
+  function loadVideo() {
+    var src = v.getAttribute('data-src');
+    if (!src || v.getAttribute('src')) return;
+    v.setAttribute('src', src);
+    v.addEventListener('canplay', function () {
+      v.style.opacity = '1';
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    }, { once: true });
+    v.load();
+  }
+  if (document.readyState === 'complete') setTimeout(loadVideo, 700);
+  else window.addEventListener('load', function () { setTimeout(loadVideo, 700); });
 })();
 </script>
 </body>
