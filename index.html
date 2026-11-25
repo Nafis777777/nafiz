@@ -1227,6 +1227,159 @@
     color: #5b2333;
     resize: vertical;
   }
+
+  /* ===== Love Meter (2026-11-25) ===== */
+  #meter-screen { display: none; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+  .meter-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--deep); }
+  .meter-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 4rem;
+    line-height: 1;
+    background: linear-gradient(120deg, #ff6b9d, #c9184a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .meter-bar {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    height: 14px;
+    border-radius: 50px;
+    background: rgba(201,24,74,0.15);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
+  }
+  .meter-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, #ff8fab, #c9184a);
+  }
+  .meter-heart {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -58%);
+    font-size: 1.15rem;
+  }
+  .meter-verdict {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.08rem;
+    color: #a4133c;
+    text-align: center;
+    min-height: 1.4em;
+  }
+  .meter-detail { font-size: 0.9rem; opacity: 0.85; text-align: center; margin-top: -8px; }
+
+  /* ===== Love Certificate (2026-11-25) ===== */
+  .cert-card {
+    position: relative;
+    width: 100%;
+    margin-top: 22px;
+    padding: 26px 20px 22px;
+    text-align: center;
+    border-radius: 18px;
+    background: linear-gradient(160deg, #fffaf2, #fff1e2);
+    border: 2px solid #d4af37;
+    box-shadow: 0 16px 36px rgba(164,19,60,0.18);
+  }
+  .cert-card::before {
+    content: '';
+    position: absolute; inset: 7px;
+    border: 1.5px dashed rgba(212,175,55,0.65);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  body #final-screen.play .cert-card { animation: certIn 0.9s cubic-bezier(.22,1.1,.36,1) 2.6s both; }
+  @keyframes certIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .cert-seal {
+    width: 54px; height: 54px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffb3c9, #c9184a);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.55rem;
+    border: 2px solid #fff;
+    box-shadow: 0 6px 16px rgba(201,24,74,0.4);
+  }
+  .cert-kicker { letter-spacing: 3px; font-size: 0.78rem; font-weight: 700; color: #a07c1f; }
+  .cert-line { font-size: 0.95rem; color: #7a1f38; margin-top: 8px; }
+  .cert-names {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #c9184a;
+    margin-top: 6px;
+  }
+  .cert-meta {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    color: #7a1f38;
+    display: flex; gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cert-witness { margin-top: 6px; font-size: 0.8rem; font-style: italic; opacity: 0.75; }
+  .cert-btn {
+    margin-top: 14px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(120deg, #e9c767, #c9962e);
+    color: #4a3200;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(201,150,46,0.35);
+  }
+  .cert-btn:active { transform: scale(0.96); }
+
+  /* ===== Love Fortune — finale te optional chhoto moja (2026-11-25) ===== */
+  .fortune-wrap {
+    margin-top: 18px;
+    width: 100%;
+    display: flex; flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  body #final-screen.play .fortune-wrap { animation: certIn 0.9s ease 3.1s both; }
+  .fortune-btn {
+    padding: 9px 18px;
+    border-radius: 50px;
+    border: 1.5px dashed rgba(201,24,74,0.5);
+    background: rgba(255,255,255,0.55);
+    color: #a4133c;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .fortune-card {
+    width: 100%;
+    max-width: 340px;
+    padding: 18px;
+    border-radius: 16px;
+    background: linear-gradient(160deg, #fffaf2, #ffeef4);
+    border: 1.5px solid rgba(212,175,55,0.7);
+    text-align: center;
+    animation: fortuneFlip 0.7s cubic-bezier(.22,1.1,.36,1) both;
+  }
+  @keyframes fortuneFlip {
+    from { opacity: 0; transform: perspective(600px) rotateX(-70deg); }
+    to { opacity: 1; transform: perspective(600px) rotateX(0deg); }
+  }
+  .fortune-star { font-size: 1.6rem; }
+  .fortune-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.02rem;
+    color: #7a1f38;
+    line-height: 1.5;
+    margin-top: 6px;
+  }
 </style>
 </head>
 <body>
@@ -1316,6 +1469,19 @@
     </div>
   </div>
 
+  <!-- LOVE METER SCREEN — journey onujayi asol score -->
+  <div id="meter-screen">
+    <div class="meter-title">Calculating our love… 💘</div>
+    <div class="meter-num" id="meter-num">0%</div>
+    <div class="meter-bar">
+      <div class="meter-fill" id="meter-fill"></div>
+      <span class="meter-heart" id="meter-heart">💖</span>
+    </div>
+    <p class="meter-verdict" id="meter-verdict"></p>
+    <p class="meter-detail" id="meter-detail"></p>
+    <button class="btn-yes" id="btn-meter-done" style="display:none" onclick="finishMeter()">Chithi ta dekhi 💌</button>
+  </div>
+
   <!-- SCRATCH SCREEN — finale er age lukano chithi -->
   <div id="scratch-screen">
     <div class="scratch-title">Tomar jonno ekta lukano chithi 💌</div>
@@ -1352,6 +1518,23 @@
     </div>
     <div class="grand-love" id="grand-love"></div>
     <div class="forever-seal" id="forever-seal">💍 Forever &amp; Always 💍</div>
+    <div class="cert-card" id="cert-card">
+      <div class="cert-seal">💖</div>
+      <div class="cert-kicker">CERTIFICATE OF LOVE</div>
+      <p class="cert-line">This certifies that</p>
+      <div class="cert-names"><span id="cert-to">My love</span> ❤️ <span id="cert-from">Nafiz</span></div>
+      <p class="cert-line">said <b>YES</b> to forever — and meant it.</p>
+      <div class="cert-meta"><span id="cert-score">Love Meter: 100% 💯</span><span>•</span><span id="cert-date"></span></div>
+      <p class="cert-witness">Witnessed by the Mascot 🐱</p>
+      <button class="cert-btn" onclick="downloadCertificate()">⬇️ Download Certificate</button>
+    </div>
+    <div class="fortune-wrap">
+      <button class="fortune-btn" id="fortune-btn" onclick="revealFortune()">✨ Aajker love fortune dekho</button>
+      <div class="fortune-card" id="fortune-card" hidden>
+        <div class="fortune-star">🔮</div>
+        <p class="fortune-text" id="fortune-text"></p>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -1379,6 +1562,9 @@
     <label for="input-note">💌 Secret note <span class="pm-opt">(optional)</span></label>
     <p class="pm-hint">Scratch card er vitore ei chithitai ber hobe — na dile shobar jonno default note thakbe 💖</p>
     <textarea id="input-note" rows="3" maxlength="160" placeholder="Write the hidden letter your love will scratch to reveal…"></textarea>
+    <label for="input-fortune">🔮 Love fortune <span class="pm-opt">(optional)</span></label>
+    <p class="pm-hint">Finale te fortune dekhte chaile ei line tai ber hobe — na dile sundor ekta emni theke jabe ✨</p>
+    <input id="input-fortune" type="text" maxlength="90" placeholder="e.g. Aaj tomar jonno ekta surprise ache…" autocomplete="off">
     <div class="pm-row">
       <button class="pm-btn pm-save" onclick="saveNames()">💾 Save</button>
       <button class="pm-btn pm-copy" onclick="copyShareLink()">🔗 Copy link</button>
@@ -2392,18 +2578,26 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
     var _answerYes = window.answerYes;
     window.answerYes = function () { setState('love', 1600); _answerYes(); };
   }
+  var journeyStart = 0;
   if (typeof window.startGame === 'function') {
     var _startGame = window.startGame;
-    window.startGame = function () { setState('love', 1200); _startGame(); };
+    window.startGame = function () {
+      journeyStart = Date.now();
+      setState('love', 1200);
+      _startGame();
+    };
   }
 
   // ---- Scratch card: finale er age ekta dhap ----
   var scratchDone = false, scratchReady = false;
+  var meterDone = false, loveResult = null;
   if (typeof window.showFinal === 'function') {
     var _showFinal = window.showFinal;
     window.showFinal = function () {
+      if (!meterDone) { openMeter(); return; }
       if (!scratchDone) { openScratch(); return; }
       _showFinal();
+      buildCertificate();
     };
   }
   function openScratch() {
@@ -2525,6 +2719,8 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
   function persistNote() {
     var inp = document.getElementById('input-note');
     try { localStorage.setItem('love_note', cleanNote(inp ? inp.value : '')); } catch (e) {}
+    var fin = document.getElementById('input-fortune');
+    try { localStorage.setItem('love_fortune', cleanFortune(fin ? fin.value : '')); } catch (e) {}
   }
   if (typeof window.applyNames === 'function') {
     var _applyNames = window.applyNames;
@@ -2548,6 +2744,12 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
     if (/^https?:\/\//i.test(ph)) url += '&photo=' + encodeURIComponent(ph);
     var note = getNote();
     if (note) url += '&note=' + encodeURIComponent(note);
+    var fortune = '';
+    try {
+      fortune = cleanFortune(new URLSearchParams(location.search).get('fortune')) ||
+        cleanFortune(localStorage.getItem('love_fortune'));
+    } catch (e) {}
+    if (fortune) url += '&fortune=' + encodeURIComponent(fortune);
     var done = function () {
       if (typeof window.toastMini === 'function') toastMini('Link copied! Send it to your love 💌');
     };
@@ -2559,7 +2761,217 @@ You are my favourite hello, my sweetest dream, and my forever. 💖`;
       window.prompt('Copy your link:', url);
     }
   };
+  // ---- Love Meter: score ta journey thekei ashe (No try + speed) ----
+  function computeLoveScore() {
+    var d = 0;
+    try { d = dodgeCount || 0; } catch (e) { d = 0; }
+    var score;
+    if (d === 0) score = 100;
+    else score = Math.max(72, Math.round(100 - 2.2 * Math.sqrt(d) - Math.min(5, d * 0.12)));
+    if (journeyStart) {
+      var qn = 10;
+      try { qn = questions.length || 10; } catch (e) {}
+      var avg = (Date.now() - journeyStart) / 1000 / qn;
+      if (avg < 2.5 && score < 100) score += 1;
+    }
+    return { score: score, dodges: d };
+  }
+  function meterVerdict(s) {
+    if (s >= 100) return 'Ekbarei YES — ek second o vabe nai! 🥰';
+    if (s >= 95) return 'Pray ekbarei YES — valobasa ekdom clear! 💖';
+    if (s >= 88) return 'Ektu khelakhela koreche, kintu mon toh agei diyechilo 😏💕';
+    if (s >= 80) return 'No niye ektu moja koreche… seshe mon-i jiteche 😄💗';
+    return 'Onek ghuriyeche! Kintu sesh porjonto YES-i bollo — eitai asol kotha 🤭💘';
+  }
+  function meterDetail() {
+    var d = loveResult ? loveResult.dodges : 0;
+    if (d === 0) return 'No te ekbaro haat-i dey nai 😍';
+    return 'No chapte giyechilo ' + d + ' bar 😏 — kintu seshe mon-i jiteche';
+  }
+  function openMeter() {
+    document.getElementById('question-screen').style.display = 'none';
+    document.getElementById('meter-screen').style.display = 'flex';
+    loveResult = computeLoveScore();
+    runMeterAnimation(loveResult.score);
+  }
+  window.finishMeter = function () {
+    meterDone = true;
+    document.getElementById('meter-screen').style.display = 'none';
+    setState('love', 1500);
+    window.showFinal();
+  };
+  function runMeterAnimation(target) {
+    var numEl = document.getElementById('meter-num');
+    var fillEl = document.getElementById('meter-fill');
+    var heartEl = document.getElementById('meter-heart');
+    var verdictEl = document.getElementById('meter-verdict');
+    var detailEl = document.getElementById('meter-detail');
+    var btn = document.getElementById('btn-meter-done');
+    verdictEl.textContent = ''; detailEl.textContent = ''; btn.style.display = 'none';
+    var dur = 2600, t0 = null;
+    function frame(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min(1, (ts - t0) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(eased * target);
+      if (p > 0.82 && p < 1) {
+        val = Math.max(0, target - Math.round(Math.random() * 30 * (1 - p)));
+      }
+      numEl.textContent = val + '%';
+      fillEl.style.width = val + '%';
+      heartEl.style.left = val + '%';
+      if (p < 1) requestAnimationFrame(frame);
+      else {
+        numEl.textContent = target + '%';
+        fillEl.style.width = target + '%';
+        heartEl.style.left = target + '%';
+        verdictEl.textContent = meterVerdict(target);
+        detailEl.textContent = meterDetail();
+        btn.style.display = 'inline-block';
+        setState('love', 2000);
+        if (typeof window.spawnConfetti === 'function') spawnConfetti();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // ---- Love Certificate: finale te, download shoho ----
+  var certBuilt = false;
+  function certDate() {
+    return new Date().toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+  }
+  function buildCertificate() {
+    if (certBuilt) return;
+    certBuilt = true;
+    var names = (typeof window.getNames === 'function')
+      ? window.getNames() : { from: 'Nafiz', to: 'My love' };
+    var score = loveResult ? loveResult.score : 100;
+    document.getElementById('cert-to').textContent = names.to;
+    document.getElementById('cert-from').textContent = names.from;
+    document.getElementById('cert-score').textContent = 'Love Meter: ' + score + '% 💯';
+    document.getElementById('cert-date').textContent = certDate();
+  }
+  window.downloadCertificate = function () {
+    var names = (typeof window.getNames === 'function')
+      ? window.getNames() : { from: 'Nafiz', to: 'My love' };
+    var score = loveResult ? loveResult.score : 100;
+    var c = document.createElement('canvas');
+    c.width = 1080; c.height = 1350;
+    var x = c.getContext('2d');
+    var g = x.createLinearGradient(0, 0, 0, 1350);
+    g.addColorStop(0, '#fffaf2'); g.addColorStop(1, '#ffeef4');
+    x.fillStyle = g; x.fillRect(0, 0, 1080, 1350);
+    x.strokeStyle = '#d4af37'; x.lineWidth = 6; x.strokeRect(36, 36, 1008, 1278);
+    x.lineWidth = 2; x.strokeRect(58, 58, 964, 1234);
+    x.setLineDash([10, 8]); x.strokeStyle = 'rgba(212,175,55,0.6)';
+    x.strokeRect(78, 78, 924, 1194); x.setLineDash([]);
+    x.textAlign = 'center';
+    var sg = x.createRadialGradient(520, 215, 10, 540, 240, 78);
+    sg.addColorStop(0, '#ffb3c9'); sg.addColorStop(1, '#c9184a');
+    x.beginPath(); x.arc(540, 240, 74, 0, Math.PI * 2);
+    x.fillStyle = sg; x.fill();
+    x.lineWidth = 4; x.strokeStyle = '#ffffff'; x.stroke();
+    x.font = '64px sans-serif'; x.fillText('💖', 540, 262);
+    x.fillStyle = '#a07c1f';
+    x.font = '700 26px sans-serif';
+    x.fillText('C E R T I F I C A T E   O F   L O V E', 540, 400);
+    x.fillStyle = '#a4133c';
+    x.font = '700 56px "Playfair Display", serif';
+    x.fillText('Officially in Love', 540, 472);
+    x.font = '400 30px sans-serif'; x.fillStyle = '#7a1f38';
+    x.fillText('This certifies that', 540, 552);
+    var nameText = names.to + '  ❤️  ' + names.from;
+    var nameSize = 62;
+    x.font = '700 ' + nameSize + 'px "Playfair Display", serif';
+    while (x.measureText(nameText).width > 930 && nameSize > 30) {
+      nameSize -= 4;
+      x.font = '700 ' + nameSize + 'px "Playfair Display", serif';
+    }
+    x.fillStyle = '#c9184a';
+    x.fillText(nameText, 540, 648);
+    x.font = 'italic 400 34px "Playfair Display", serif'; x.fillStyle = '#7a1f38';
+    x.fillText('said YES to forever — and meant it.', 540, 726);
+    var pillText = '💯 Love Meter: ' + score + '%';
+    x.font = '700 36px sans-serif';
+    var pw = x.measureText(pillText).width + 70;
+    x.beginPath();
+    if (x.roundRect) x.roundRect(540 - pw / 2, 786, pw, 74, 37);
+    else x.rect(540 - pw / 2, 786, pw, 74);
+    var pg = x.createLinearGradient(540 - pw / 2, 0, 540 + pw / 2, 0);
+    pg.addColorStop(0, '#ff6b9d'); pg.addColorStop(1, '#c9184a');
+    x.fillStyle = pg; x.fill();
+    x.fillStyle = '#ffffff';
+    x.fillText(pillText, 540, 836);
+    x.font = '400 30px sans-serif'; x.fillStyle = '#7a1f38';
+    x.fillText(certDate(), 540, 956);
+    x.font = 'italic 400 28px "Playfair Display", serif';
+    x.fillText('Witnessed by the Mascot 🐱', 540, 1024);
+    x.font = '40px sans-serif';
+    x.fillText('💗  ✨  💖  ✨  💗', 540, 1170);
+    if (c.toBlob) {
+      c.toBlob(function (blob) {
+        if (!blob) return;
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'love-certificate.png';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+      });
+    }
+  };
+
+  // ---- Love Fortune: finale te optional, personalize theke set kora jay ----
+  function cleanFortune(v) {
+    return String(v || '').replace(/[<>&"']/g, '').trim().slice(0, 90);
+  }
+  var FORTUNES = [
+    'Aaj tomader hashi diye din shuru hobe ☀️💖',
+    'Ekta chhoto surprise opekkha korche… cokh khola rekho ✨',
+    'Aaj se tomar kotha bhebei ghumabe 🌙💕',
+    'Tomader bondhon aaj aro ektu govir holo 💞',
+    'Aaj ekta purono gaan dujon kei mone poriye debe 🎵💗',
+    'Je kotha ta bolte chaicho, aaj bollei valo hobe 💌',
+    'Aaj hashi hobe beshi, rag hobe kom 😄💖',
+    'Tomader jonno ekta sundor muhurto asche, khub shigroi 🌸'
+  ];
+  function getFortune() {
+    try {
+      var qf = cleanFortune(new URLSearchParams(location.search).get('fortune'));
+      if (qf) return qf;
+    } catch (e) {}
+    try {
+      var lf = cleanFortune(localStorage.getItem('love_fortune'));
+      if (lf) return lf;
+    } catch (e) {}
+    return FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+  }
+  function prefillFortune() {
+    var inp = document.getElementById('input-fortune');
+    if (!inp || document.activeElement === inp) return;
+    try {
+      inp.value = cleanFortune(new URLSearchParams(location.search).get('fortune')) ||
+        cleanFortune(localStorage.getItem('love_fortune')) || '';
+    } catch (e) {}
+  }
+  if (typeof window.openPersonalize === 'function') {
+    var _openPersonalize = window.openPersonalize;
+    window.openPersonalize = function () { _openPersonalize(); prefillFortune(); };
+  }
+  window.revealFortune = function () {
+    var card = document.getElementById('fortune-card');
+    var txt = document.getElementById('fortune-text');
+    if (!card || !txt) return;
+    txt.textContent = getFortune();
+    card.hidden = false;
+    var btn = document.getElementById('fortune-btn');
+    if (btn) btn.style.display = 'none';
+    setState('love', 1500);
+  };
+
   applyNote();
+  prefillFortune();
 })();
 </script>
 <script>
